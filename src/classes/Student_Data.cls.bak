@@ -2,8 +2,8 @@ public class Student_Data {
     public Student_Data(){
         //Insreting the details of student
         Student__c s1=new Student__c();
-        s1.name='XYZq';
-        s1.Roll_Number__c=987615;
+        s1.name='XYZ';
+        s1.Roll_Number__c=98765;
         s1.Address__c='Uttar-Pradesh';
         s1.Email_Address__c='sks@fexle.com';
         insert s1;
