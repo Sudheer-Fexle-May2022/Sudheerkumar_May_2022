@@ -261,6 +261,11 @@
         <defaultValue>false</defaultValue>
         <externalId>false</externalId>
         <label>Exam Fees Submitted ?</label>
+
+
+        <length>7</length>
+        <required>true</required>
+
         <trackHistory>false</trackHistory>
         <trackTrending>false</trackTrending>
         <type>Checkbox</type>
