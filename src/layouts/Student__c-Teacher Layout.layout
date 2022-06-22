@@ -60,7 +60,7 @@
             </layoutItems>
             <layoutItems>
                 <behavior>Required</behavior>
-                <field>Email_Address__c</field>
+                <field>Email__c</field>
             </layoutItems>
             <layoutItems>
                 <behavior>Required</behavior>
@@ -103,7 +103,7 @@
                 <field>Current_Year__c</field>
             </layoutItems>
             <layoutItems>
-                <behavior>Required</behavior>
+                <behavior>Edit</behavior>
                 <field>Exam_Fees_Submitted__c</field>
             </layoutItems>
             <layoutItems>
@@ -113,7 +113,7 @@
         </layoutColumns>
         <layoutColumns>
             <layoutItems>
-                <behavior>Required</behavior>
+                <behavior>Edit</behavior>
                 <field>Fees_Submitted__c</field>
             </layoutItems>
             <layoutItems>
@@ -131,33 +131,53 @@
         <layoutColumns>
             <layoutItems>
                 <behavior>Edit</behavior>
-                <field>X1st_Semester_Percentage__c</field>
+                <field>X1st_Sem_Back__c</field>
             </layoutItems>
             <layoutItems>
                 <behavior>Edit</behavior>
-                <field>Subject_in_which_Back__c</field>
+                <field>Subject_in_which_1st_Sem_Back__c</field>
             </layoutItems>
             <layoutItems>
                 <behavior>Edit</behavior>
-                <field>X3rd_semester_Back__c</field>
+                <field>X2nd_Sem_Percentage__c</field>
             </layoutItems>
             <layoutItems>
                 <behavior>Edit</behavior>
-                <field>X4rth_sem_back__c</field>
+                <field>X3rd_Sem_Back__c</field>
+            </layoutItems>
+            <layoutItems>
+                <behavior>Edit</behavior>
+                <field>Subject_in_which_3rd_Sem_Back__c</field>
+            </layoutItems>
+            <layoutItems>
+                <behavior>Edit</behavior>
+                <field>X4rth_Sem_Back__c</field>
+            </layoutItems>
+            <layoutItems>
+                <behavior>Edit</behavior>
+                <field>Subject_in_which_4rth_Sem_Back__c</field>
             </layoutItems>
         </layoutColumns>
         <layoutColumns>
             <layoutItems>
                 <behavior>Edit</behavior>
-                <field>X1st_Semester_back__c</field>
+                <field>X1st_Sem_Percentage__c</field>
             </layoutItems>
             <layoutItems>
                 <behavior>Edit</behavior>
-                <field>X2nd_sem_percent__c</field>
+                <field>X2nd_Sem_Back__c</field>
             </layoutItems>
             <layoutItems>
                 <behavior>Edit</behavior>
-                <field>X4rh_sem_percentage__c</field>
+                <field>Subject_in_which_2nd_Sem_Back__c</field>
+            </layoutItems>
+            <layoutItems>
+                <behavior>Edit</behavior>
+                <field>X3rd_Sem_Percentage__c</field>
+            </layoutItems>
+            <layoutItems>
+                <behavior>Edit</behavior>
+                <field>X4rh_Sem_Percentage__c</field>
             </layoutItems>
         </layoutColumns>
         <style>TwoColumnsLeftToRight</style>
@@ -172,6 +192,10 @@
         <layoutColumns/>
         <style>CustomLinks</style>
     </layoutSections>
+    <relatedLists>
+        <fields>NAME</fields>
+        <relatedList>StudentSubjects__c.studentsubject_to_student__c</relatedList>
+    </relatedLists>
     <showEmailCheckbox>false</showEmailCheckbox>
     <showHighlightsPanel>true</showHighlightsPanel>
     <showInteractionLogPanel>true</showInteractionLogPanel>
