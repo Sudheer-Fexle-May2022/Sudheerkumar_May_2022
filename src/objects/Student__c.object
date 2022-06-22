@@ -247,9 +247,9 @@
         <unique>false</unique>
     </fields>
     <fields>
-        <fullName>Email_Address__c</fullName>
+        <fullName>Email__c</fullName>
         <externalId>false</externalId>
-        <label>Email Address</label>
+        <label>Email</label>
         <required>true</required>
         <trackHistory>false</trackHistory>
         <trackTrending>false</trackTrending>
@@ -258,14 +258,12 @@
     </fields>
     <fields>
         <fullName>Exam_Fees_Submitted__c</fullName>
+        <defaultValue>false</defaultValue>
         <externalId>false</externalId>
-        <label>Exam Fees Submitted ?</label>
-        <length>7</length>
-        <required>true</required>
+        <label>Exam Fees Submitted?</label>
         <trackHistory>false</trackHistory>
         <trackTrending>false</trackTrending>
-        <type>Text</type>
-        <unique>false</unique>
+        <type>Checkbox</type>
     </fields>
     <fields>
         <fullName>Father_Mobile_Number__c</fullName>
@@ -292,14 +290,12 @@
     </fields>
     <fields>
         <fullName>Fees_Submitted__c</fullName>
+        <defaultValue>false</defaultValue>
         <externalId>false</externalId>
         <label>Fees Submitted?</label>
-        <length>5</length>
-        <required>true</required>
         <trackHistory>false</trackHistory>
         <trackTrending>false</trackTrending>
-        <type>Text</type>
-        <unique>false</unique>
+        <type>Checkbox</type>
     </fields>
     <fields>
         <fullName>Home_Phone__c</fullName>
@@ -326,28 +322,12 @@
     </fields>
     <fields>
         <fullName>Is_Donation__c</fullName>
+        <defaultValue>false</defaultValue>
         <externalId>false</externalId>
         <label>Is Donation?</label>
-        <required>false</required>
         <trackHistory>false</trackHistory>
         <trackTrending>false</trackTrending>
-        <type>Picklist</type>
-        <valueSet>
-            <restricted>true</restricted>
-            <valueSetDefinition>
-                <sorted>false</sorted>
-                <value>
-                    <fullName>Yes</fullName>
-                    <default>false</default>
-                    <label>Yes</label>
-                </value>
-                <value>
-                    <fullName>No</fullName>
-                    <default>false</default>
-                    <label>No</label>
-                </value>
-            </valueSetDefinition>
-        </valueSet>
+        <type>Checkbox</type>
     </fields>
     <fields>
         <fullName>Mobile_Number__c</fullName>
@@ -466,6 +446,145 @@
         <unique>false</unique>
     </fields>
     <fields>
+        <fullName>Subject_in_which_1st_Sem_Back__c</fullName>
+        <externalId>false</externalId>
+        <label>Subject in which 1st Sem Back</label>
+        <required>false</required>
+        <trackHistory>false</trackHistory>
+        <trackTrending>false</trackTrending>
+        <type>MultiselectPicklist</type>
+        <valueSet>
+            <restricted>true</restricted>
+            <valueSetDefinition>
+                <sorted>false</sorted>
+                <value>
+                    <fullName>Engineering Physics</fullName>
+                    <default>false</default>
+                    <label>Engineering Physics</label>
+                </value>
+                <value>
+                    <fullName>Engineering Chemistry</fullName>
+                    <default>false</default>
+                    <label>Engineering Chemistry</label>
+                </value>
+                <value>
+                    <fullName>BEE</fullName>
+                    <default>false</default>
+                    <label>BEE</label>
+                </value>
+                <value>
+                    <fullName>BME</fullName>
+                    <default>false</default>
+                    <label>BME</label>
+                </value>
+            </valueSetDefinition>
+        </valueSet>
+        <visibleLines>4</visibleLines>
+    </fields>
+    <fields>
+        <fullName>Subject_in_which_2nd_Sem_Back__c</fullName>
+        <externalId>false</externalId>
+        <label>Subject in which 2nd Sem Back</label>
+        <required>false</required>
+        <trackHistory>false</trackHistory>
+        <trackTrending>false</trackTrending>
+        <type>MultiselectPicklist</type>
+        <valueSet>
+            <restricted>true</restricted>
+            <valueSetDefinition>
+                <sorted>false</sorted>
+                <value>
+                    <fullName>Advance Mathematics</fullName>
+                    <default>false</default>
+                    <label>Advance Mathematics</label>
+                </value>
+                <value>
+                    <fullName>Programing with C</fullName>
+                    <default>false</default>
+                    <label>Programing with C</label>
+                </value>
+                <value>
+                    <fullName>DSA</fullName>
+                    <default>false</default>
+                    <label>DSA</label>
+                </value>
+            </valueSetDefinition>
+        </valueSet>
+        <visibleLines>4</visibleLines>
+    </fields>
+    <fields>
+        <fullName>Subject_in_which_3rd_Sem_Back__c</fullName>
+        <externalId>false</externalId>
+        <label>Subject in which 3rd Sem Back</label>
+        <required>false</required>
+        <trackHistory>false</trackHistory>
+        <trackTrending>false</trackTrending>
+        <type>MultiselectPicklist</type>
+        <valueSet>
+            <restricted>true</restricted>
+            <valueSetDefinition>
+                <sorted>false</sorted>
+                <value>
+                    <fullName>Descrete Maths</fullName>
+                    <default>false</default>
+                    <label>Descrete Maths</label>
+                </value>
+                <value>
+                    <fullName>Programing with java</fullName>
+                    <default>false</default>
+                    <label>Programing with java</label>
+                </value>
+                <value>
+                    <fullName>Machine learning</fullName>
+                    <default>false</default>
+                    <label>Machine learning</label>
+                </value>
+                <value>
+                    <fullName>AI</fullName>
+                    <default>false</default>
+                    <label>AI</label>
+                </value>
+            </valueSetDefinition>
+        </valueSet>
+        <visibleLines>4</visibleLines>
+    </fields>
+    <fields>
+        <fullName>Subject_in_which_4rth_Sem_Back__c</fullName>
+        <externalId>false</externalId>
+        <label>Subject in which 4rth Sem Back</label>
+        <required>false</required>
+        <trackHistory>false</trackHistory>
+        <trackTrending>false</trackTrending>
+        <type>MultiselectPicklist</type>
+        <valueSet>
+            <restricted>true</restricted>
+            <valueSetDefinition>
+                <sorted>false</sorted>
+                <value>
+                    <fullName>Python</fullName>
+                    <default>false</default>
+                    <label>Python</label>
+                </value>
+                <value>
+                    <fullName>IOT</fullName>
+                    <default>false</default>
+                    <label>IOT</label>
+                </value>
+                <value>
+                    <fullName>Big Data</fullName>
+                    <default>false</default>
+                    <label>Big Data</label>
+                </value>
+                <value>
+                    <fullName>EEDM</fullName>
+                    <default>false</default>
+                    <label>EEDM</label>
+                </value>
+            </valueSetDefinition>
+        </valueSet>
+        <visibleLines>4</visibleLines>
+    </fields>
+    <fields>
         <fullName>Subject_in_which_Back__c</fullName>
         <externalId>false</externalId>
         <label>Subject in which Back</label>
@@ -477,32 +596,18 @@
         <unique>false</unique>
     </fields>
     <fields>
-        <fullName>X1st_Semester_Percentage__c</fullName>
+        <fullName>X1st_Sem_Back__c</fullName>
+        <defaultValue>false</defaultValue>
         <externalId>false</externalId>
-        <label>1st Semester Percentage</label>
-        <precision>3</precision>
-        <required>false</required>
-        <scale>0</scale>
+        <label>1st Sem Back?</label>
         <trackHistory>false</trackHistory>
         <trackTrending>false</trackTrending>
-        <type>Number</type>
-        <unique>false</unique>
+        <type>Checkbox</type>
     </fields>
     <fields>
-        <fullName>X1st_Semester_back__c</fullName>
+        <fullName>X1st_Sem_Percentage__c</fullName>
         <externalId>false</externalId>
-        <label>1st Semester back ?</label>
-        <length>3</length>
-        <required>false</required>
-        <trackHistory>false</trackHistory>
-        <trackTrending>false</trackTrending>
-        <type>Text</type>
-        <unique>false</unique>
-    </fields>
-    <fields>
-        <fullName>X2nd_sem_percent__c</fullName>
-        <externalId>false</externalId>
-        <label>2nd sem percent</label>
+        <label>1st Sem Percentage</label>
         <precision>3</precision>
         <required>false</required>
         <scale>0</scale>
@@ -511,20 +616,18 @@
         <type>Percent</type>
     </fields>
     <fields>
-        <fullName>X3rd_semester_Back__c</fullName>
+        <fullName>X2nd_Sem_Back__c</fullName>
+        <defaultValue>false</defaultValue>
         <externalId>false</externalId>
-        <label>3rd semester Back ?</label>
-        <length>3</length>
-        <required>false</required>
+        <label>2nd Sem Back?</label>
         <trackHistory>false</trackHistory>
         <trackTrending>false</trackTrending>
-        <type>Text</type>
-        <unique>false</unique>
+        <type>Checkbox</type>
     </fields>
     <fields>
-        <fullName>X4rh_sem_percentage__c</fullName>
+        <fullName>X2nd_Sem_Percentage__c</fullName>
         <externalId>false</externalId>
-        <label>4rh sem percentage</label>
+        <label>2nd Sem Percentage</label>
         <precision>3</precision>
         <required>false</required>
         <scale>0</scale>
@@ -533,15 +636,44 @@
         <type>Percent</type>
     </fields>
     <fields>
-        <fullName>X4rth_sem_back__c</fullName>
+        <fullName>X3rd_Sem_Back__c</fullName>
+        <defaultValue>false</defaultValue>
         <externalId>false</externalId>
-        <label>4rth sem back ?</label>
-        <length>3</length>
-        <required>false</required>
+        <label>3rd Sem Back?</label>
         <trackHistory>false</trackHistory>
         <trackTrending>false</trackTrending>
-        <type>Text</type>
-        <unique>false</unique>
+        <type>Checkbox</type>
+    </fields>
+    <fields>
+        <fullName>X3rd_Sem_Percentage__c</fullName>
+        <externalId>false</externalId>
+        <label>3rd Sem Percentage</label>
+        <precision>3</precision>
+        <required>false</required>
+        <scale>0</scale>
+        <trackHistory>false</trackHistory>
+        <trackTrending>false</trackTrending>
+        <type>Percent</type>
+    </fields>
+    <fields>
+        <fullName>X4rh_Sem_Percentage__c</fullName>
+        <externalId>false</externalId>
+        <label>4rh Sem Percentage</label>
+        <precision>3</precision>
+        <required>false</required>
+        <scale>0</scale>
+        <trackHistory>false</trackHistory>
+        <trackTrending>false</trackTrending>
+        <type>Percent</type>
+    </fields>
+    <fields>
+        <fullName>X4rth_Sem_Back__c</fullName>
+        <defaultValue>false</defaultValue>
+        <externalId>false</externalId>
+        <label>4rth Sem Back?</label>
+        <trackHistory>false</trackHistory>
+        <trackTrending>false</trackTrending>
+        <type>Checkbox</type>
     </fields>
     <label>Student</label>
     <listViews>
