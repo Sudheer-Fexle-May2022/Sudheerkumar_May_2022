@@ -450,39 +450,33 @@ public with sharing class StarPatterns {
     *     Revision log:   V_1.0 - Created  - Your name - Sudheer Kumar Shakya, Date- 26-06-2022            
     **/
     public static void upwardButterfly(integer N){
-        integer x=1;  
-        for(integer i=1;i<=N;i++){
-            string a=' ';
-            string b='  ';
-            for(integer j=1;j<=N;j++){
-                if((j>=x)!=false&&j<=N-x+1){
-                    
-                    //printing *
-                    a=a+'*';
+        integer rem=math.mod(N,2);
+        if(rem==1){
+            integer x=1;  
+            for(integer i=1;i<=N;i++){
+                string a=' ';
+                string b='  ';
+                for(integer j=1;j<=N;j++){
+                    if((j<=x)!=false||j>=N-x+1){                        
+                        //printing *
+                        a=a+'*';
+                    }
+                    else{
+                        //printing spaces
+                        a=a+preserveWhitespace(b);
+                    }
+                }
+                if(i<=N/2)
+                {
+                    x++;
                 }
                 else{
-                    //printing spaces
-                    a=a+preserveWhitespace(b);
+                    x--;
                 }
+                system.debug(a);
             }
-            if(i<=N/2)
-            {
-                x++;
-            }
-            else{
-                x--;
-            }
-            system.debug(a);
-        }
-    }  
-    
-    /**   Description :   Making Logics to print  butterfly for even number
-    *     Created By  :   Sudheer Kumar Shakya
-    *     Arguments   :            
-    *     Return      :   Void       
-    *     Revision log:   V_1.0 - Created  - Your name - Sudheer Kumar Shakya, Date- 29-06-2022            
-    **/
-    public static void butterFly(integer N){        
+        }  
+        else{       
             for(integer i=1;i<=N;i++){
                 string a=' ';
        			string b='  ';
@@ -498,7 +492,7 @@ public with sharing class StarPatterns {
                 }
                 system.debug(a);
             }
-            for(integer i=N;i>=1;i--){
+            for(integer i=N;i>0;i--){
                 string a=' ';
         		string b='  ';
                 for(integer j=1;j<=i;j++){
@@ -515,3 +509,4 @@ public with sharing class StarPatterns {
             }            
         }
     }
+}
