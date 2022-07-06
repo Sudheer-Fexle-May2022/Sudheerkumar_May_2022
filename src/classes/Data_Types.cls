@@ -183,46 +183,92 @@ public with sharing class Data_Types {
         result3 = mynumber.addAll(snumber);
         system.assertEquals(true, result3);
         system.debug(result3);
-            
-        //implementing Date
-        List<AccountHistory> ahlist2 = [SELECT Field,OldValue,NewValue FROM AccountHistory];
-        for(AccountHistory ah2 : ahlist2) {
-            System.debug('Field: ' + ah2.Field);
-            if (ah2.field == 'MyDate__c') {
-                Date oldValue = Date.valueOf(ah2.OldValue);
-                Date newValue = Date.valueOf(ah2.NewValue);
+         
+        //implementing date Data type
+        Date someDate = Date.newInstance(2022, 07, 02);
+        List<Date> dates = new List<Date>();
+        dates.add(someDate);
+        system.debug(dates); 
+        
+        //implementing Datetime
+        Datetime dt1 = DateTime.newInstance(2022,07,02,16,55,30);
+        List<Datetime> dt=new List<Datetime>();
+        dt.add(dt1);
+        system.debug(dt);
+        
+        //implementing sObject 
+        Account account = [select Id, AnnualRevenue, Website from Account limit 1];
+        Map<String, Schema.SObjectField> schemaFieldMap = Schema.SObjectType.Account.fields.getMap();
+        Map<String, Object> queriedFieldValues = new Map<String, Object>();
+        for (String fieldName: schemaFieldMap.keySet()) {
+            try { 
+                queriedFieldValues.put(fieldName, account.get(fieldName)); 
+            } catch (SObjectException e)    { 
+                // Intentional capture 
             }
         }
+        System.debug(queriedFieldValues);
 
-        //implementing Datetime   
-        List<AccountHistory> ahlist3 = [SELECT Field,OldValue,NewValue FROM AccountHistory];
-        for(AccountHistory ah3 : ahlist3) {
-            System.debug('Field: ' + ah3.Field);
-            if (ah3.field == 'MyDatetime__c') {
-                Datetime oldValue = Datetime.valueOf(ah3.OldValue);
-                Datetime newValue = Datetime.valueOf(ah3.NewValue);
-            }
-        }
+        //String data type
+        List < String > Dept = new List < String > { 'CSE', 'EEE','ECE' };  
+        system.debug('Default Department List : ' + Dept);
 
-        //implementing Boolean data type
-        List<AccountHistory> ahlist = 
-        [SELECT Field,OldValue,NewValue
-        FROM AccountHistory];
-        for(AccountHistory ah : ahlist) {
-            System.debug('Field: ' + ah.Field);
-            if (ah.field == 'IsPlatinum__c') {
-                Boolean oldValue = 
-                Boolean.valueOf(ah.OldValue);
-                Boolean newValue = 
-                Boolean.valueOf(ah.NewValue);
-            }
-        }
+        //add(ListElement)  
+        Dept.add('MECH');  
+        Dept.add('IT');  
+        system.debug('Using add(ListElement) - Department List : ' + Dept);  
 
-        //implementing enum structure
-        Integer i = StatusCode.DELETE_FAILED.ordinal();
-        String s = StatusCode.DELETE_FAILED.name();
-        List<StatusCode> values = StatusCode.values();
-        StatusCode statusCodeValue = StatusCode.valueOf('delete_failed');
-    } 
-   
+        //add(index, ListElement)  
+        Dept.add(0, 'Civil');  
+        Dept.add(5, 'Bio Technology');  
+        system.debug('Using add(index, ListElement)-Department List : ' + Dept); 
+
+        //addAll(fromList)  
+        List < String > Depttest = new List < string > ();  
+        Depttest.addAll(Dept);  
+        system.debug('Using addAll(fromList) - Department List : ' + Depttest); 
+
+        //size()  
+        Integer s = Dept.size();  
+        system.debug('Using size() - Department Size : ' + s); 
+
+        //get(index)  
+        string str = Dept.get(3);  
+        system.debug('Using get(index) - Department Index 3 is: ' + str); 
+
+        //isEmpty()  
+        Boolean b = Dept.isEmpty();  
+        system.debug('Using isEmpty() - Department Empty : ' + b);  
+
+        //clone()  
+        List < String > Depttest2 = new List < string > ();  
+        Depttest2 = Dept.clone();  
+        system.debug('Using clone() - Department List 2 : ' + Depttest2);  
+
+        //Clear()  
+        Depttest2.clear();  
+        system.debug('Using clear() - Department List 2 : ' + Depttest2); 
+
+        //Example of Integer data type
+        List<Integer> numbers = new List<Integer>{1,2,3,4,5};
+        System.debug(numbers);
+
+        //adding numbers using add()
+        numbers.add(1);
+        numbers.add(2);
+        numbers.add(3);
+        numbers.add(4);
+        numbers.add(5);
+        System.debug(numbers);
+
+        //removing elements using remove()
+        System.debug('Removing element "10" from index 3');
+        numbers.remove(3);
+        System.debug('Updated List = ' + numbers);
+
+        //Clearing elements using clear()
+        System.debug('Clearing list...');
+        numbers.clear();
+        System.debug('Updated list = ' + numbers);
+    }    
 }
