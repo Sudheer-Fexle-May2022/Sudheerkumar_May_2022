@@ -104,17 +104,17 @@ public with sharing class Data_Types {
         Set<String> setOfKeys = m.keySet();
         System.debug('Value of Set with Keys '+setOfKeys);
     }
-
-    /**   Description :   implementing Set data type with example
+    
+    /**   Description :   Implementation of Set Data type 
     *
     *     Created By  :   Sudheer Kumar Shakya
     *
-    *     Arguments   :    
+    *     Arguments   :   None 
     *
     *     Return      :   void
     *
-    *     Revision log:   V_1.0 - Created  -Sudheer Kumar Shakya - Date-03/07/2022
-    *                     V_1.1 - Modified - Sudheer Kumar Shakya - Date - 03/07/2022
+    *     Revision log:   V_1.0 - Created  - Sudheer Kumar Shakya - Date-02/07/2022
+    *                     V_1.1 - Modified - Sudheer Kumar Shakya- Date -02/07/2022
     * 
     **/
     public static void setOfBranches() {
@@ -184,5 +184,50 @@ public with sharing class Data_Types {
         system.assertEquals(true, result3);
         system.debug(result3);
 
-    }    
+    } 
+
+    /**   Description :   Implementation Other different different data Types
+    *
+    *     Created By  :   Sudheer Kumar Shakya
+    *
+    *     Arguments   :   None 
+    *
+    *     Return      :   void
+    *
+    *     Revision log:   V_1.0 - Created  - Sudheer Kumar Shakya - Date-02/07/2022
+    *                     V_1.1 - Modified - Sudheer Kumar Shakya- Date -02/07/2022
+    * 
+    **/
+    public static void otherDatatypes(){
+       
+        //implementing integer data type
+        Integer rollNumber = 81;
+        system.debug(' roll number is: '+rollNumber);
+        Integer marksPercentage=84;
+        system.debug('percentage of marks  is: '+marksPercentage);
+
+        //Boolean example
+        Boolean qualifiedGraduation;
+        qualifiedGraduation = true;
+        system.debug('Value of shipmentDispatched '+qualifiedGraduation);
+
+        //Using Date Data type to fetch date
+        Date graduationDate = date.today();
+        System.debug('graduationDate '+graduationDate);
+        
+        //Example of string data type
+        String studentName = 'Sudjheer Kumar Shakya';
+        System.debug('Name of student is: '+studentName);
+        String collegeName = 'GEC Ajmer';
+        System.debug('Name of college is: '+collegeName);
+
+        //Declaring an sObject variable of type Account
+        Account obj = new Account();
+
+        //Assignment of values to fields of sObjects
+        obj.Name = 'XYZ Customer';
+        obj.Description = 'Test Account';
+        System.debug('obj variable value'+obj); 
+        
+    }
 }
