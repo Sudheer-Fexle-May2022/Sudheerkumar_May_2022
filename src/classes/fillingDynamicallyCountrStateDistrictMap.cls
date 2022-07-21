@@ -35,7 +35,6 @@ public with sharing class fillingDynamicallyCountrStateDistrictMap {
                 If(!mapofCountryStatesandDistricts.get(district.State_Name__r.Country_Name__r.Name).get(district.State_Name__r.Name)
                 .contains(district.Name)) {
                     mapofCountryStatesandDistricts.get(district.State_Name__r.Country_Name__r.Name).get(district.State_Name__r.Name).add(district.Name);
-                  
                     If(district.State_Name__r.Country_Name__r.Name.startsWith(firstLetter) && district.State_Name__r.Name.startsWith(firstLetter) &&
                         district.Name.startsWith(firstLetter)) {                       
                         combinationOfCountryStateAndDistrict.add(district.State_Name__r.Country_Name__r.Name + ' -> ' + district.State_Name__r.Name + 
@@ -109,7 +108,9 @@ public with sharing class fillingDynamicallyCountrStateDistrictMap {
                 wrapStates.nameOfState=state.Name;
                 wrapStates.Total_Number_of_Districts=stateList[0].Total_Number_of_Districts__c;
                 wrapStates.districts=new List<Districts>();
-                if(mapofCountryStatesandDistricts.containsKey(enteredNameofCountry)&& mapofCountryStatesandDistricts.get(enteredNameofCountry).containsKey(state.Name)){
+                if(mapofCountryStatesandDistricts.containsKey(enteredNameofCountry)
+                && mapofCountryStatesandDistricts.get(enteredNameofCountry)
+                .containsKey(state.Name)){
                     for(String district:mapofCountryStatesandDistricts.get(enteredNameofCountry).get(state.Name)){
                         Districts wrapDistricts=new Districts();
                         wrapDistricts.nameOfDistrict=district;
