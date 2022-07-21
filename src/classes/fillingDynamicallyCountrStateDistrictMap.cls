@@ -32,7 +32,8 @@ public with sharing class fillingDynamicallyCountrStateDistrictMap {
                 If(!mapofCountryStatesandDistricts.get(district.State_Name__r.Country_Name__r.Name).containsKey(district.State_Name__r.Name)) {
                     mapofCountryStatesandDistricts.get(district.State_Name__r.Country_Name__r.Name).put(district.State_Name__r.Name, new List<String>());
                 }
-                If(!mapofCountryStatesandDistricts.get(district.State_Name__r.Country_Name__r.Name).get(district.State_Name__r.Name).contains(district.Name)) {
+                If(!mapofCountryStatesandDistricts.get(district.State_Name__r.Country_Name__r.Name).get(district.State_Name__r.Name)
+                .contains(district.Name)) {
                     mapofCountryStatesandDistricts.get(district.State_Name__r.Country_Name__r.Name).get(district.State_Name__r.Name).add(district.Name);
                   
                     If(district.State_Name__r.Country_Name__r.Name.startsWith(firstLetter) && district.State_Name__r.Name.startsWith(firstLetter) &&
@@ -57,11 +58,10 @@ public with sharing class fillingDynamicallyCountrStateDistrictMap {
     *                     V_1.1 - Modified - Sudheer Kumar Shakya - Date - 15/07/2022
     **/
     public static void aggregateCountDistrictandState(){
-
         //Findng total Number of states using aggregate
         Map<Id,State__c> mapofDistrictsinState=new Map<Id,State__c>();
         AggregateResult[] districtAggregateResultForState = [Select Count(Id)totalDistricts, State_Name__c From District__c
-                                                             GROUP BY State_Name__c];
+         GROUP BY State_Name__c];
         if(!districtAggregateResultForState.isEmpty()){                                                     
             for(AggregateResult ar : districtAggregateResultForState) {
                 mapofDistrictsinState.put((Id)ar.get('State_Name__c'), new State__c(Id = (Id)ar.get('State_Name__c'),
@@ -94,7 +94,6 @@ public with sharing class fillingDynamicallyCountrStateDistrictMap {
     *                     V_1.1 - Modified - Sudheer Kumar Shakya - Date - 15/07/2022
     **/
     public static void countryJSONdata(String enteredNameofCountry){
-
         List<State__c> stateList = [SELECT Id,Name,Total_Number_of_Districts__c,Country_Name__r.Name,Country_Name__r.Country_Code__c,
         Country_Name__r.Total_Number_of_States__c,Country_Name__r.Total_Number_of_Districts__c FROM State__c 
         WHERE Country_Name__r.Name Like: enteredNameofCountry];   
