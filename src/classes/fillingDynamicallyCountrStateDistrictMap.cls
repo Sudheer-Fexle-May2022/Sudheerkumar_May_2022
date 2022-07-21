@@ -36,18 +36,17 @@ public with sharing class fillingDynamicallyCountrStateDistrictMap {
                     mapofCountryStatesandDistricts.get(district.State_Name__r.Country_Name__r.Name).get(district.State_Name__r.Name).add(district.Name);
                   
                     If(district.State_Name__r.Country_Name__r.Name.startsWith(firstLetter) && district.State_Name__r.Name.startsWith(firstLetter) &&
-                        district.Name.startsWith(firstLetter))                        
+                        district.Name.startsWith(firstLetter)) {                       
                         combinationOfCountryStateAndDistrict.add(district.State_Name__r.Country_Name__r.Name + ' -> ' + district.State_Name__r.Name + 
                         ' -> ' + district.Name);
+                    }       
                 }
             }
         }
-
         System.debug('Map of District State and Country is:'+mapofCountryStatesandDistricts);
         System.debug('Combination Key Set Of Country State and District is: '+combinationOfCountryStateAndDistrict);
         aggregateCountDistrictandState();
-        countryJSONdata('Bharat');
-
+        countryJSONdata(enteredNameofCountry);
     }    
 
     /**   Description :   Method To update records
@@ -61,28 +60,27 @@ public with sharing class fillingDynamicallyCountrStateDistrictMap {
 
         //Findng total Number of states using aggregate
         Map<Id,State__c> mapofDistrictsinState=new Map<Id,State__c>();
-        AggregateResult[] districtAggregateResultForState = [Select Count(Id)Total_Districts, State_Name__c From District__c
+        AggregateResult[] districtAggregateResultForState = [Select Count(Id)totalDistricts, State_Name__c From District__c
                                                              GROUP BY State_Name__c];
-        for(AggregateResult ar : districtAggregateResultForState) {
-            State__c state = new State__c();
-            state.Id = (Id)ar.get('State_Name__c');
-            state.Total_Number_of_Districts__c = (Integer)ar.get('Total_Districts');
-            mapofDistrictsinState.put(state.Id,state);
+        if(!districtAggregateResultForState.isEmpty()){                                                     
+            for(AggregateResult ar : districtAggregateResultForState) {
+                mapofDistrictsinState.put((Id)ar.get('State_Name__c'), new State__c(Id = (Id)ar.get('State_Name__c'),
+                Total_Number_of_Districts__c =(Integer)ar.get('totalDistricts')));
+            }
         }
-
         //Finding total number of Districts 
         Map<Id,Country__c> mapofStatesinCountry=new Map<Id,Country__c>();
-        AggregateResult[] stateAggregateForCountry = [Select Count(Id)Total_States,SUM(Total_Number_of_Districts__c)Total_District,Country_Name__c 
-                                                     FROM State__c
-                                                     GROUP BY Country_Name__c];
-        for(AggregateResult aggresult : stateAggregateForCountry) {
-            Country__c country = new Country__c();
-            country.Id = (Id)aggresult.get('Country_Name__c');
-            country.Total_Number_of_States__c=(Integer)aggresult.get('Total_States');
-            country.Total_Number_of_Districts__c=(Decimal)aggresult.get('Total_District');
-            mapofStatesinCountry.put(country.Id,country);
-        }
-        
+        AggregateResult[] stateAggregateForCountry = [Select Count(Id)totalStates,SUM(Total_Number_of_Districts__c)totalDistrict,Country_Name__c 
+        FROM State__c GROUP BY Country_Name__c];
+        if(!stateAggregateForCountry.isEmpty()){
+            for(AggregateResult aggresult : stateAggregateForCountry) {
+                Country__c country = new Country__c();
+                country.Id = (Id)aggresult.get('Country_Name__c');
+                country.Total_Number_of_States__c=(Integer)aggresult.get('totalStates');
+                country.Total_Number_of_Districts__c=(Decimal)aggresult.get('totalDistrict');
+                mapofStatesinCountry.put(country.Id,country);
+            }  
+        }     
         //updating records
         update mapofDistrictsinState.values();
         update mapofStatesinCountry.values();
@@ -97,15 +95,15 @@ public with sharing class fillingDynamicallyCountrStateDistrictMap {
     **/
     public static void countryJSONdata(String enteredNameofCountry){
 
-        List<State__c> stateList = [SELECT Id,Name,Total_Number_of_Districts__c,Country_Name__r.Name,Country_Name__r.Country_Code__c,Country_Name__r.Total_Number_of_States__c,
-                                Country_Name__r.Total_Number_of_Districts__c FROM State__c WHERE Country_Name__r.Name Like: enteredNameofCountry];   
+        List<State__c> stateList = [SELECT Id,Name,Total_Number_of_Districts__c,Country_Name__r.Name,Country_Name__r.Country_Code__c,
+        Country_Name__r.Total_Number_of_States__c,Country_Name__r.Total_Number_of_Districts__c FROM State__c 
+        WHERE Country_Name__r.Name Like: enteredNameofCountry];   
         if(!stateList.isEmpty()){
             Country wrapCountry=new Country();
             wrapCountry.nameOfCountry= stateList[0].Country_Name__r.Name;
             wrapCountry.Country_Code=stateList[0].Country_Name__r.Country_Code__c;
             wrapCountry.Total_Number_of_States=stateList[0].Country_Name__r.Total_Number_of_States__c;
             wrapCountry.Total_Number_of_Districts=stateList[0].Country_Name__r.Total_Number_of_Districts__c;
-
             wrapCountry.State=new List<States>();
             for(State__c state : stateList){
                 States wrapStates=new States();
@@ -124,9 +122,17 @@ public with sharing class fillingDynamicallyCountrStateDistrictMap {
             }   
             String countryjsonData=JSON.serialize(wrapCountry);
             System.debug(countryjsonData);
+
+            if(!stateList.isEmpty()){
+                Country__c  country = new Country__c();
+                country.Id =  stateList[0].Country_Name__r.Id;
+                country.Country_JSON_Data__c = countryjsonData;
+                update country;
+                String recordLink = URL.getSalesforceBaseUrl().getHost()+'/'+country.Id;
+                System.debug(recordLink);
+            }
         }
     }
-
     //Wrapper Classes
     public class Countryjson{
     public List<Country> Country{get;set;}
