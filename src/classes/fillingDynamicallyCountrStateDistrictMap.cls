@@ -17,7 +17,7 @@ public with sharing class fillingDynamicallyCountrStateDistrictMap {
     *     Revision log:   V_1.0 - Created  - Sudheer Kumar Shakya - Date - 15/07/2022
     *                     V_1.1 - Modified - Sudheer Kumar Shakya - Date - 15/07/2022
     **/
-    public fillingDynamicallyCountrStateDistrictMap(String firstLetter){
+    public fillingDynamicallyCountrStateDistrictMap(String firstLetter,String enteredNameofCountry){
         
         //filling map dynamically
         List<District__c> districtList = [Select Name, State_Name__r.Name, State_Name__r.Country_Name__r.Name From District__c];   
@@ -37,13 +37,17 @@ public with sharing class fillingDynamicallyCountrStateDistrictMap {
                   
                     If(district.State_Name__r.Country_Name__r.Name.startsWith(firstLetter) && district.State_Name__r.Name.startsWith(firstLetter) &&
                         district.Name.startsWith(firstLetter))                        
-                        combinationOfCountryStateAndDistrict.add(district.State_Name__r.Country_Name__r.Name + ' -> ' + district.State_Name__r.Name + ' -> ' + district.Name);
+                        combinationOfCountryStateAndDistrict.add(district.State_Name__r.Country_Name__r.Name + ' -> ' + district.State_Name__r.Name + 
+                        ' -> ' + district.Name);
                 }
             }
         }
 
         System.debug('Map of District State and Country is:'+mapofCountryStatesandDistricts);
         System.debug('Combination Key Set Of Country State and District is: '+combinationOfCountryStateAndDistrict);
+        aggregateCountDistrictandState();
+        countryJSONdata('Bharat');
+
     }    
 
     /**   Description :   Method To update records
@@ -56,97 +60,92 @@ public with sharing class fillingDynamicallyCountrStateDistrictMap {
     public static void aggregateCountDistrictandState(){
 
         //Findng total Number of states using aggregate
-        Map<Id,Country__c> mapofDistrictsinCountry=new Map<Id,Country__c>();
-        AggregateResult[] districtAggregateForState = [Select Count(Name) Total_Number_of_States,SUM(Total_Number_of_Districts__c) ,Country_Name__c From State__c
-                                                      GROUP BY Country_Name__c];
-        for(AggregateResult aggresult : districtAggregateForState) {
-            Country__c country = new Country__c();
-            Country.Id = (Id)aggresult.get('Country_Name__c');
-            Country.Total_Number_of_States__c = (Integer)aggresult.get('Total_Number_of_States');
-            mapofDistrictsinCountry.put(country.Id,country);
+        Map<Id,State__c> mapofDistrictsinState=new Map<Id,State__c>();
+        AggregateResult[] districtAggregateResultForState = [Select Count(Id)Total_Districts, State_Name__c From District__c
+                                                             GROUP BY State_Name__c];
+        for(AggregateResult ar : districtAggregateResultForState) {
+            State__c state = new State__c();
+            state.Id = (Id)ar.get('State_Name__c');
+            state.Total_Number_of_Districts__c = (Integer)ar.get('Total_Districts');
+            mapofDistrictsinState.put(state.Id,state);
         }
 
         //Finding total number of Districts 
-        Map<Id,State__c> mapofStatesinCountry=new Map<Id,State__c>();
-        AggregateResult[] stateAggregateForCountry = [Select Count(Name) Total_Number_of_Districts,State_Name__c From District__c
-                                                     GROUP BY State_Name__c];
+        Map<Id,Country__c> mapofStatesinCountry=new Map<Id,Country__c>();
+        AggregateResult[] stateAggregateForCountry = [Select Count(Id)Total_States,SUM(Total_Number_of_Districts__c)Total_District,Country_Name__c 
+                                                     FROM State__c
+                                                     GROUP BY Country_Name__c];
         for(AggregateResult aggresult : stateAggregateForCountry) {
-            State__c state = new State__c();
-            state.Id = (Id)aggresult.get('State_Name__c');
-            state.Total_Number_of_Districts__c = (Integer)aggresult.get('Total_Number_of_Districts');
-            mapofStatesinCountry.put(state.Id,state);
+            Country__c country = new Country__c();
+            country.Id = (Id)aggresult.get('Country_Name__c');
+            country.Total_Number_of_States__c=(Integer)aggresult.get('Total_States');
+            country.Total_Number_of_Districts__c=(Decimal)aggresult.get('Total_District');
+            mapofStatesinCountry.put(country.Id,country);
         }
         
         //updating records
-        update mapofDistrictsinCountry.values();
+        update mapofDistrictsinState.values();
         update mapofStatesinCountry.values();
     }
 
+    /**   Description :   In this method we will create json for country
+    *     Created By  :   Sudheer Kumar Shakya
+    *     Arguments   :   None
+    *     Return      :   Void
+    *     Revision log:   V_1.0 - Created  - Sudheer Kumar Shakya - Date - 15/07/2022
+    *                     V_1.1 - Modified - Sudheer Kumar Shakya - Date - 15/07/2022
+    **/
     public static void countryJSONdata(String enteredNameofCountry){
 
-        Country wrapCountry=new Country();
-      //  wrapCountry.nameOfCountry=enteredNameofCountry;
-       // List<Country__c> listCode=[SELECT Country_Code__c FROM Country__c WHERE Name Like : enteredNameofCountry];
-       // wrapCountry.Country_Code=(Decimal)listCode[0].get('Country_Code__c');
-      
-        wrapCountry.State=new List<States>();
-        wrapCountry.nameOfCountry=enteredNameofCountry;
-        List<Country__c> listCode=[SELECT Country_Code__c FROM Country__c WHERE Name Like : enteredNameofCountry];
-        wrapCountry.Country_Code=(Decimal)listCode[0].get('Country_Code__c');
-        List<AggregateResult> listAggState = [SELECT COUNT(Name)Total_Number_of_States FROM State__c
-                                               WHERE Country_Name__r.Name Like : enteredNameofCountry
-                                               GROUP BY Country_Name__r.Name];
-        wrapCountry.Total_Number_of_States=(Integer)listAggState[0].get('Total_Number_of_States');
+        List<State__c> stateList = [SELECT Id,Name,Total_Number_of_Districts__c,Country_Name__r.Name,Country_Name__r.Country_Code__c,Country_Name__r.Total_Number_of_States__c,
+                                Country_Name__r.Total_Number_of_Districts__c FROM State__c WHERE Country_Name__r.Name Like: enteredNameofCountry];   
+        if(!stateList.isEmpty()){
+            Country wrapCountry=new Country();
+            wrapCountry.nameOfCountry= stateList[0].Country_Name__r.Name;
+            wrapCountry.Country_Code=stateList[0].Country_Name__r.Country_Code__c;
+            wrapCountry.Total_Number_of_States=stateList[0].Country_Name__r.Total_Number_of_States__c;
+            wrapCountry.Total_Number_of_Districts=stateList[0].Country_Name__r.Total_Number_of_Districts__c;
 
-        List<AggregateResult> listAggDistrict=[SELECT COUNT(Name)Total_Number_of_Districts FROM District__c 
-                                               WHERE State_Name__r.Country_Name__r.Name Like : enteredNameofCountry 
-                                               GROUP BY State_Name__r.Country_Name__r.Name];
-        wrapCountry.Total_Number_of_Districts=(Integer)listAggDistrict[0].get('Total_Number_of_Districts');
-
-        for(String enteredState:mapofCountryStatesandDistricts.get(enteredNameofCountry).keyset()){
-            if(enteredState=='Uttar Pradesh'){
+            wrapCountry.State=new List<States>();
+            for(State__c state : stateList){
                 States wrapStates=new States();
-                wrapStates.nameOfState=enteredState;
-
-                List<AggregateResult> listAggDistricts=[SELECT COUNT(Name)Total_Number_of_Districts FROM District__c 
-                                               WHERE State_Name__r.Name Like : enteredState 
-                                               GROUP BY State_Name__r.Name];
-                wrapStates.Total_Number_of_Districts=(Integer)listAggDistricts[0].get('Total_Number_of_Districts');
-                  
+                wrapStates.nameOfState=state.Name;
+                wrapStates.Total_Number_of_Districts=stateList[0].Total_Number_of_Districts__c;
                 wrapStates.districts=new List<Districts>();
-                for(String district:mapofCountryStatesandDistricts.get(enteredNameofCountry).get(enteredState)){
-                    Districts wrapDistricts=new Districts();
-                    wrapDistricts.nameOfDistrict=district;
+                if(mapofCountryStatesandDistricts.containsKey(enteredNameofCountry)&& mapofCountryStatesandDistricts.get(enteredNameofCountry).containsKey(state.Name)){
+                    for(String district:mapofCountryStatesandDistricts.get(enteredNameofCountry).get(state.Name)){
+                        Districts wrapDistricts=new Districts();
+                        wrapDistricts.nameOfDistrict=district;
 
-                    wrapStates.districts.add(wrapDistricts);
+                        wrapStates.districts.add(wrapDistricts);
+                    }
                 }
-
                 wrapCountry.State.add(wrapStates);
-            }
-            
+            }   
+            String countryjsonData=JSON.serialize(wrapCountry);
+            System.debug(countryjsonData);
         }
-
-        String countryjsonData=JSON.serialize(wrapCountry);
-        System.debug(countryjsonData);
     }
 
+    //Wrapper Classes
+    public class Countryjson{
     public List<Country> Country{get;set;}
+    }
     public class Country{
         public String nameOfCountry{get;set;}
         public Decimal Country_Code{get;set;}
-        public Integer Total_Number_of_States{get;set;}
-        public Integer Total_Number_of_Districts{get;set;}
+        public Decimal Total_Number_of_States{get;set;}
+        public Decimal Total_Number_of_Districts{get;set;}
         public List<States> State{get;set;}
     }
 
     public class States{
         public List<Districts> districts{get;set;}
         public String nameOfState{get;set;}
-        public Integer Total_Number_of_Districts{get;set;}
+        public Decimal Total_Number_of_Districts{get;set;}
     }
      
     public class Districts{
         public String nameOfDistrict{get;set;}
     }
-
 }
