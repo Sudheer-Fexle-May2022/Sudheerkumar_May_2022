@@ -44,6 +44,7 @@ public with sharing class fillingDynamicallyCountrStateDistrictMap {
             }
         }
         System.debug('Map of District State and Country is:'+mapofCountryStatesandDistricts);
+        System.debug('Country map showing after filling dynamically:');
         System.debug('Combination Key Set Of Country State and District is: '+combinationOfCountryStateAndDistrict);
         aggregateCountDistrictandState();
         countryJSONdata(enteredNameofCountry);
@@ -73,16 +74,19 @@ public with sharing class fillingDynamicallyCountrStateDistrictMap {
         FROM State__c GROUP BY Country_Name__c];
         if(!stateAggregateForCountry.isEmpty()){
             for(AggregateResult aggresult : stateAggregateForCountry) {
-                Country__c country = new Country__c();
-                country.Id = (Id)aggresult.get('Country_Name__c');
-                country.Total_Number_of_States__c=(Integer)aggresult.get('totalStates');
-                country.Total_Number_of_Districts__c=(Decimal)aggresult.get('totalDistrict');
-                mapofStatesinCountry.put(country.Id,country);
+                mapofStatesinCountry.put((Id)aggresult.get('Country_Name__c'),new Country__c(Id=(Id)aggresult.get('Country_Name__c'),
+                Total_Number_of_States__c=(Integer)aggresult.get('toatalStates'),
+                Total_Number_of_Districts__c=(Integer)aggresult.get('totalDistrict')));
             }  
         }     
         //updating records
-        update mapofDistrictsinState.values();
-        update mapofStatesinCountry.values();
+        if(!mapofDistrictsinState.isEmpty()){
+            update mapofDistrictsinState.values();
+        }
+        
+        if(!mapofStatesinCountry.isEmpty()){
+            update mapofStatesinCountry.values();
+        }
     }
 
     /**   Description :   In this method we will create json for country
@@ -122,15 +126,17 @@ public with sharing class fillingDynamicallyCountrStateDistrictMap {
             }   
             String countryjsonData=JSON.serialize(wrapCountry);
             System.debug(countryjsonData);
+            
+            //updating country json data
+            Country__c  country = new Country__c();
+            country.Id =  stateList[0].Country_Name__r.Id;
+            country.Country_JSON_Data__c = countryjsonData;
+            update country;
 
-            if(!stateList.isEmpty()){
-                Country__c  country = new Country__c();
-                country.Id =  stateList[0].Country_Name__r.Id;
-                country.Country_JSON_Data__c = countryjsonData;
-                update country;
-                String recordLink = URL.getSalesforceBaseUrl().getHost()+'/'+country.Id;
-                System.debug(recordLink);
-            }
+            //Created logic for clickable URL
+            String recordLink = URL.getSalesforceBaseUrl().getHost()+'/'+country.Id;
+            System.debug(recordLink);
+            
         }
     }
     //Wrapper Classes
