@@ -157,8 +157,8 @@
         <fullName>Country_Name__c</fullName>
         <externalId>false</externalId>
         <formula>HYPERLINK(
-  &quot;/&quot; &amp; State_Name__c,
-  State_Name__r.State_s_Country__c,
+  &quot;/&quot; &amp; State_Name__r.Country_Name__c,
+  State_Name__r.Country_Name__r.Name,
   &quot;_self&quot;
 )</formula>
         <formulaTreatBlanksAs>BlankAsZero</formulaTreatBlanksAs>
