@@ -156,7 +156,11 @@
     <fields>
         <fullName>Country_Name__c</fullName>
         <externalId>false</externalId>
-        <formula>State_Name__r.State_s_Country__c&amp;&quot;-&gt;&quot;&amp; Name</formula>
+        <formula>HYPERLINK(
+  &quot;/&quot; &amp; State_Name__c,
+  State_Name__r.State_s_Country__c,
+  &quot;_self&quot;
+)</formula>
         <formulaTreatBlanksAs>BlankAsZero</formulaTreatBlanksAs>
         <label>Country Name</label>
         <required>false</required>

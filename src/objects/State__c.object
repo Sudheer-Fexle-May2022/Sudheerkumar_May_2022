@@ -167,6 +167,16 @@
         <writeRequiresMasterRead>false</writeRequiresMasterRead>
     </fields>
     <fields>
+        <fullName>State_Code__c</fullName>
+        <externalId>false</externalId>
+        <label>State Code</label>
+        <length>4</length>
+        <required>false</required>
+        <trackTrending>false</trackTrending>
+        <type>Text</type>
+        <unique>false</unique>
+    </fields>
+    <fields>
         <fullName>State_s_Country__c</fullName>
         <externalId>false</externalId>
         <formula>Country_Name__r.Name&amp;&quot;-&gt;&quot;&amp; Name</formula>
