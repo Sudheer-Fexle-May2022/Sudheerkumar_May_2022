@@ -20,9 +20,12 @@ public with sharing class ValidationsObjectandperformDML{
             Account a=new Account(Name='insertAccount'+i);
             insertAccounts.add(a);
         }
+
         //inserting records
-        insert insertAccounts;
-        System.debug('inserted accounts successfully:'+insertAccounts);
+        if(!insertAccounts.isEmpty()){
+            insert insertAccounts;
+            System.debug('inserted accounts successfully:'+insertAccounts);
+        }
     }
 
     /**   Description :   Method to perform update 
@@ -34,15 +37,17 @@ public with sharing class ValidationsObjectandperformDML{
     **/
     public static void updateRecords(){
         List<Account> accountList=[SELECT Name,AccountNumber,Rating,Phone FROM Account WHERE Name Like : 'My AccountafterUpdatedNow'];
+       if(!accountList.isEmpty()){
         for(Account a:accountList){
             a.Name=a.Name+'Now';
             a.AccountNumber='1234567890';
             a.Rating='Hot';
             a.Phone='9876543';
         }
-        //updating record
+        //updating record   
         update accountList;
         System.debug('Updated records are:'+accountList);
+       }       
     }
 
     /**   Description :   Method to perform upsert 
@@ -58,8 +63,11 @@ public with sharing class ValidationsObjectandperformDML{
             Account a=new Account(Name='upserted Record Number'+i);
             upsertRecord.add(a);   
         }
-        upsert upsertRecord;
-        System.debug('Upserted records are :-->'+upsertRecord);
+        
+        if(!upsertRecord.isEmpty()){
+            upsert upsertRecord;
+            System.debug('Upserted records are :-->'+upsertRecord);
+        }               
     }
 
     /**   Description :   Method to perform delete an undelete
@@ -71,11 +79,15 @@ public with sharing class ValidationsObjectandperformDML{
     **/
     public static void deleteandundeleteRecords(){
         List<Account> deleteList=[SELECT Name,AccountNumber FROM ACCOUNT WHERE Name Like : 'My AccountafterUpdated'];
-        delete deleteList;
         List<Account> undeleteList=[SELECT Name,AccountNumber FROM ACCOUNT WHERE Name Like : 'My AccountafterUpdated'];
-        undelete undeleteList;  
-        System.debug('Deleted List:-->'+deleteList);
-        System.debug('unDeleted List:-->'+undeleteList); 
+        if(!deleteList.isEmpty()){
+            delete deleteList;
+            System.debug('Deleted List:-->'+deleteList);
+        }
+        if(!undeleteList.isEmpty()){
+            undelete undeleteList;  
+            System.debug('unDeleted List:-->'+undeleteList); 
+        }
     }
 
     /**   Description :   Here we shall perform merge method
@@ -88,17 +100,17 @@ public with sharing class ValidationsObjectandperformDML{
     public static void mergeRecord(){
 
         List<Account> mergeAccount=[SELECT Name From Account WHERE Name LIKE : 'Merg%' LIMIT 3];
+        if(!mergeAccount.isEmpty()){
+            Account a=mergeAccount[0];
+            Account b=mergeAccount[1];
+            Account c=mergeAccount[2];
+
+            List<Account> mergeList=new List<Account>();
         
-        Account a=mergeAccount[0];
-        Account b=mergeAccount[1];
-        Account c=mergeAccount[2];
-
-        List<Account> mergeList=new List<Account>();
-       
-        mergeList.add(mergeAccount[1]);
-        mergeList.add(mergeAccount[2]);
-
-        merge a mergeList;
+            mergeList.add(mergeAccount[1]);
+            mergeList.add(mergeAccount[2]);        
+            merge a mergeList;            
+        }      
     }
 
     /**   Description :   record insertion
@@ -117,8 +129,9 @@ public with sharing class ValidationsObjectandperformDML{
 
         List<Account> listAccount = [SELECT id, Name from Account WHERE 
                                      Name = 'My AccountafterUpdatedNow' ];
+        if(!listAccount.isEmpty())
+            newOpportunity.AccountId =  listAccount[0].id;    
 
-        newOpportunity.AccountId =  listAccount[0].id;
         Database.SaveResult results = Database.insert(newOpportunity);
     }
 
@@ -200,12 +213,13 @@ public with sharing class ValidationsObjectandperformDML{
         result1.setLeadId(myLead.id);
 
         LeadStatus convertStatus = [SELECT Id, MasterLabel FROM LeadStatus WHERE IsConverted=true LIMIT 1];
-        result1.setConvertedStatus(convertStatus.MasterLabel);
-
-        Database.LeadConvertResult result2 = Database.convertLead(result1);
-        System.debug(result2);
-
+        if(convertStatus!=Null){
+            result1.setConvertedStatus(convertStatus.MasterLabel);
+            Database.LeadConvertResult result2 = Database.convertLead(result1);
+            System.debug(result2);
+        }
     }
+
     /**   Description :   To perform Exception Handling
     *     Created By  :   Sudheer Kumar Shakya
     *     Arguments   :   None
