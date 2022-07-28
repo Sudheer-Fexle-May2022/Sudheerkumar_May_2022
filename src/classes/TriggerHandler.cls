@@ -47,7 +47,6 @@ public with sharing class TriggerHandler {
                     if(account.AccountNumber.contains('FD-')){
                         account.AccountNumber=account.AccountNumber.remove('FD-') ;   
                     } 
-                   // account.AccountNumber=account.AccountNumber;
                 }    
             }
         }
