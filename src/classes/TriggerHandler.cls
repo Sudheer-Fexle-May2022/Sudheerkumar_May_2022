@@ -40,14 +40,14 @@ public with sharing class TriggerHandler {
                     account.AccountNumber='FD-'+account.AccountNumber;
                 }    
             
-                else if(account.Type!='Fixed Deposit' && account.Type!='Saving Account'){
+                else{
                     if(account.AccountNumber.contains('SA-')){
                         account.AccountNumber=account.AccountNumber.remove('SA-') ;   
                     } 
                     if(account.AccountNumber.contains('FD-')){
                         account.AccountNumber=account.AccountNumber.remove('FD-') ;   
                     } 
-                    account.AccountNumber=account.AccountNumber;
+                   // account.AccountNumber=account.AccountNumber;
                 }    
             }
         }
@@ -68,14 +68,12 @@ public with sharing class TriggerHandler {
                 String[] toAddresses=new List<String> {acc.Email__c};  //setting address to which mail is sent                
                 if(!toAddresses.isEmpty()){
                     emailMessage.setToAddresses(toAddresses);
-                    emailMessage.setSubject('Welcome To HDFC Banking Services:'+acc.Name); //Setting Mail's Subject
-                    
+                    emailMessage.setSubject('Welcome To HDFC Banking Services:'+acc.Name); //Setting Mail's Subject 
                     //Setting HTML Body 
                     String Body='Hi :'+acc.Name+',<br>'+'Congreatulations Your Account is Created Successfuly'+',<br>'
-                                    +'Your Account Details are:'+',<br>'
-                                    +' Account Type='+acc.Type+',<br>'+'Account Number is:'+acc.AccountNumber+',<br>'
-                                    +'Registered Mail='+acc.Email__c+',<br>';
-
+                    +'Your Account Details are:'+',<br>'
+                    +' Account Type='+acc.Type+',<br>'+'Account Number is:'+acc.AccountNumber+',<br>'
+                    +'Registered Mail='+acc.Email__c+',<br>';
                     emailMessage.setHtmlBody(Body);
                 }    
                 emailList.add(emailMessage);
