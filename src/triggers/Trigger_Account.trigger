@@ -6,24 +6,32 @@
 *                  V_1.1 - Modified - Sudheer Kumar - 27/07/2022
 **/
 trigger Trigger_Account on Account (Before insert,Before update,After insert) {
-    
-    //Here Calling Method which is used to add prefix as per entered type
-    if(Trigger.isBefore&&Trigger.isInsert){
-        TriggerHandler.prefixforAccount(Trigger.new,Trigger.oldMap); 
-        system.debug('Check Insert List ::: Trigger.New ' + Trigger.New);
-        system.debug('Check Insert List ::: Trigger.old ' + Trigger.old);          
+
+    //Performing Different Before Event
+    if(Trigger.isBefore){
+
+        if(Trigger.isInsert||Trigger.isUpdate){
+
+            //Here Calling Method which is used to add prefix as per entered type
+            TriggerHandler.prefixforAccount(Trigger.new,Trigger.oldMap); 
+            system.debug('Check Insert List ::: Trigger.New ' + Trigger.New);
+            System.debug('Check Insert List ::: Trigger.oldMap ' + Trigger.oldMap);   
+        }  
+        
+        if(Trigger.isUpdate){
+            //Here Calling the method which is used to update the Phone Description
+            TriggerHandler.updatePhoneDescription(Trigger.New,Trigger.oldMap);
+            system.debug('Check Insert List for UPD::: Trigger.New ' + Trigger.New);
+            System.debug('Check Insert List for UPD::: Trigger.oldMap ' + Trigger.oldMap);
+        }
     } 
 
-    //Calling method which is used to send Email
-    if(Trigger.isAfter&&Trigger.isInsert){                
-        TriggerHandler.sendEmailNotification(Trigger.new); 
-        System.debug('Check Insert List ::: Trigger.New ' + Trigger.New);     
+    //Performing After event
+    if(Trigger.isAfter){ 
+        if(Trigger.isInsert){  
+            //Here we are Calling the method which is used to send Email             
+            TriggerHandler.sendEmailNotification(Trigger.new); 
+            System.debug('Check Insert List ::: Trigger.New ' + Trigger.New); 
+        }
     } 
- 
-    //Calling method which is used to update Phone description
-    if(Trigger.isBefore && Trigger.isUpdate){
-        TriggerHandler.updatePhoneDescription(Trigger.New,Trigger.oldMap);
-        TriggerHandler.prefixforAccount(Trigger.new,Trigger.oldMap); 
-    }
-
 }
